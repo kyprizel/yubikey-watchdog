@@ -4,24 +4,22 @@
 import sys, time
 import win32gui, win32con, win32api, win32file
 import win32gui_struct, winnt
-import psutil
 import subprocess
 
 GUID_DEVINTERFACE_USB_DEVICE = "{A5DCBF10-6530-11D2-901F-00C04FB951ED}"
 YUBIKEY_PIDVID = 'VID_1050&PID_0116'
-GPG_PROC = ('scdaemon.exe', 'gpg-agent.exe')
+GPG_KILL_CMD1 = ('C:\Program Files (x86)\GNU\GnuPG\pub\gpg-connect-agent.exe', 'killagent', '/bye')
+GPG_KILL_CMD2 = ('C:\Program Files (x86)\GNU\GnuPG\pub\gpg-connect-agent.exe', '/bye')
 GPG_CMD = ('C:\Program Files (x86)\GNU\GnuPG\pub\gpg.EXE', '--card-status')
 
 # Kill old gpg-agent
 def KillGPGAgent():
-    for p in psutil.process_iter():
-        if p.name() in GPG_PROC:
-            p.terminate()
+    ret = subprocess.call(GPG_KILL_CMD1)
+    return subprocess.call(GPG_KILL_CMD2)
 
 # Run new gpg-agent
 def RunGPGAgent():
-    p = subprocess.Popen(GPG_CMD)
-#    print GPG_CMD, p
+    return subprocess.call(GPG_CMD)
 
 # WM_DEVICECHANGE message handler.
 def OnDeviceChange(hwnd, msg, wp, lp):
