@@ -5,6 +5,9 @@ import sys, time
 import win32gui, win32con, win32api, win32file
 import win32gui_struct, winnt
 import subprocess
+import ctypes
+
+_user32 = ctypes.windll.user32
 
 GUID_DEVINTERFACE_USB_DEVICE = "{A5DCBF10-6530-11D2-901F-00C04FB951ED}"
 YUBIKEY_PIDVID = 'VID_1050&PID_0116'
@@ -38,6 +41,7 @@ def OnDeviceChange(hwnd, msg, wp, lp):
     KillGPGAgent()
     if win32con.DBT_DEVICEREMOVECOMPLETE == wp:
         print 'Yubikey removed'
+        _user32.LockWorkStation()
     else:
         print 'Yubikey connected'
         RunGPGAgent()
