@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
 # Based on pywin32 Demo RegisterDeviceNotification
+from __future__ import print_function
 import sys
 import time
 import ctypes
 import subprocess
-from __future__ import print_function
 
 import win32gui, win32con, win32api, win32file
 import win32gui_struct, winnt
