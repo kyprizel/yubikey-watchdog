@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 
 # Based on pywin32 Demo RegisterDeviceNotification
-import sys, time
+import sys
+import time
+import ctypes
+import subprocess
+from __future__ import print_function
+
 import win32gui, win32con, win32api, win32file
 import win32gui_struct, winnt
-import subprocess
-import ctypes
 
 _user32 = ctypes.windll.user32
 
@@ -40,10 +43,10 @@ def OnDeviceChange(hwnd, msg, wp, lp):
 
     KillGPGAgent()
     if win32con.DBT_DEVICEREMOVECOMPLETE == wp:
-        print 'Yubikey removed'
+        print ('Yubikey removed')
         _user32.LockWorkStation()
     else:
-        print 'Yubikey connected'
+        print ('Yubikey connected')
         RunGPGAgent()
     return True
 
